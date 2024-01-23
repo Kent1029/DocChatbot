@@ -1,0 +1,25 @@
+name: Deploy to GCP
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Google Cloud Platform
+      uses: google-github-actions/setup-gcloud@master
+      with:
+        service_account_key: ${{ secrets.GCP_base_env }}
+        project_id: tsmccareerhack2024-tsid-grp5
+
+    - name: Deploy to GCP
+      run: |
+        gcloud components install gcloud
+        gcloud auth activate-service-account --key-file=${{ secrets.GCP_base_env }}
+        # Add your deployment commands here
